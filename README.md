@@ -1,95 +1,231 @@
-<p align="center">
-<img src="https://i.imgur.com/pU5A58S.png" alt="Microsoft Active Directory Logo"/>
-</p>
+# Active Directory & Entra ID Hybrid IAM Implementation
 
-<h1>On-premises Active Directory Deployed in the Cloud (Azure)</h1>
-This tutorial outlines the implementation of on-premises Active Directory within Azure Virtual Machines.<br />
+A hands-on Identity and Access Management lab built to simulate real-world enterprise hybrid identity workflows using Windows Server 2025, Active Directory, and Microsoft Entra ID. This project covers the full IAM lifecycle — from environment deployment and user provisioning to privileged access management, conditional access enforcement, and security monitoring.
 
+---
 
+## Table of Contents
 
-<h2>Environments and Technologies Used</h2>
+- [Overview](#overview)
+- [Technologies Used](#technologies-used)
+- [Architecture](#architecture)
+- [Project Phases](#project-phases)
+  - [Phase 1 — Environment Setup](#phase-1--environment-setup)
+  - [Phase 2 — OU Structure & User Provisioning](#phase-2--ou-structure--user-provisioning)
+  - [Phase 3 — Role Based Access Control](#phase-3--role-based-access-control)
+  - [Phase 4 — Conditional Access Policies](#phase-4--conditional-access-policies)
+  - [Phase 5 — Privileged Identity Management](#phase-5--privileged-identity-management)
+  - [Phase 6 — Password & Authentication Policies](#phase-6--password--authentication-policies)
+  - [Phase 7 — Monitoring & Auditing](#phase-7--monitoring--auditing)
+- [Key Skills Demonstrated](#key-skills-demonstrated)
+- [Author](#author)
 
-- Microsoft Azure (Virtual Machines/Compute)
-- Remote Desktop
-- Active Directory Domain Services
-- PowerShell
+---
 
-<h2>Operating Systems Used </h2>
+## Overview
 
-- Windows Server 2022
-- Windows 10 (21H2)
+This lab replicates the hybrid identity infrastructure found in enterprise environments where on-premises Active Directory is synchronized to Microsoft Entra ID (formerly Azure AD). The project demonstrates end-to-end IAM operations including user lifecycle management, RBAC implementation, privileged access controls, and security monitoring — all automated where possible using PowerShell and the Microsoft Graph API.
 
+---
 
-<h2>Deployment and Configuration Steps</h2>
+## Technologies Used
 
-<p>
-</p>
-<p>
-In this lab we will create two VMs in the same VNET. One will be a Domain Controller, the other will be a Client machine. We will change the DC to a static IP because its offering Active Directory services to the client machine. Client machine will be joined to the domain. We will control the DNS settings on the client machine, the client machine will use the DC as its DNS server. 
-</p>
-<br />
+| Technology | Purpose |
+|---|---|
+| Windows Server 2025 | Domain Controller / AD DS |
+| Active Directory Domain Services | On-premises identity store |
+| Microsoft Entra ID | Cloud identity provider |
+| Microsoft Entra Connect Sync | Hybrid identity synchronization |
+| PowerShell | Automation and scripting |
+| Microsoft Graph API | Entra ID management and reporting |
+| Azure Log Analytics | Security monitoring |
+| KQL (Kusto Query Language) | Log querying and threat detection |
+| Privileged Identity Management (PIM) | Just-in-time privileged access |
 
-<p>
-<img src="https://i.imgur.com/d22FHIm.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-</p>
-<p>
-DC-1 has to have a static Private IP Address. Client one will connect to DC-1 to ensure connectivity we will try to ping DC-1 from Client-1. At first the ping will not work correctly. We have to enable ICMPv4 on the firewall on DC-1. Now we can ping DC-1 successfully from Client-1
-</p>
-<br />
+---
 
-<p>
-<img src="https://i.imgur.com/HvZBWzc.png" height="60%" width="60%" alt="Disk Sanitization Steps"/>
-</p>
-<img src="https://i.imgur.com/1lrrGPw.png" height="60%" width="60%" alt="Disk Sanitization Steps"/>
-<p>
-Now we will log back into DC-1 to install AD Users & Computers. Promote the VM to DC, setup a new forest as "mydomain.com" afterwards restart then log back into DC-1 as user: "mydomain.com\labuser". If you performed the steps properly you should be able to run AD Users & Computers as shown below.
-</p>
-<img src="https://i.imgur.com/cGjvRke.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-</p>
-We can start creating Organizational Units (OU). Let's first create an OU named _EMPLOYEES. Create another OU named _ADMINS. In order to do that right click on the domain area. Select new->Organizational Unit and fill out the field. Then click inside of your OU and right click, select new and select user and fill out the information for your new user. The user should be named Jane Doe, she is going to be an Admin so her username will be Jane_admin. Lastly add Jane to the domain admins security group. 
-</p>
-<img src="https://i.imgur.com/hL7g5Y5.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-</p>
-<img src="https://i.imgur.com/kcgvzdE.png" height="50%" width="50%" alt="Disk Sanitization Steps"/>
-From now on you can use Jane_admin as the administrator account. Now we will join Client-1 to the domain (mydomain.com) from the azure portal we will change client-1's DNS settings to the DC's Private IP address. After you do that restart Client-1 from within the Azure portal. Our picture below shows verification that client-1 is on the DC-1 DNS. 
-</p>
-<img src="https://i.imgur.com/jbrGTXW.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-</p>
-<img src="https://i.imgur.com/kvcm2cY.jpg" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-</p>
-<p>
-</p>
-<p>
-We have to join Client-1 to the domain in order to do so navigate to your system settings and go to about. Off to the right select rename this pc (advanced). From there select to change the domain. Enter "mydomain.com" after that enter your credentials from mydomain.com\labuser. Your computer will restart and then client-1 will be a part of mydomain.com
-</p>
-<br />
-<p>
-  <p>
-<img src="https://i.imgur.com/Ze0Em5e.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-</p>
-<p>
-Client-1 is now a part of the domain. Now we will set up remote desktop for non-administrative users on Client-1. We have to log into Client-1 as an admin and open system properties. Click on "Remote Desktop", allow "domain users" access to remote desktop. After completing those steps you should be able to log into Client-1 as a normal user.
-</p>
-<br />
+## Architecture
 
-<p>
-  <p>
-<img src="https://i.imgur.com/SApOKiE.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-</p>
-<p>
-Lastly to verify that normal users can RDP into Client-1 we will use a script to generate thousands of users into the domain. We will input the script in powershell, after the users are created we will select one and RDP into Client-1.
-</p>
-<br />
-<img src="https://i.imgur.com/EzWG8ug.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<p>
-<p>
-  <p>
-<img src="https://i.imgur.com/Gkpe68K.png" height="60%" width="60%" alt="Disk Sanitization Steps"/>
-</p>
-<img src="https://i.imgur.com/n3gMwQV.png" height="60%" width="60%" alt="Disk Sanitization Steps"/>
-<p>
-As you can see the Powershell script created a user with the username "bab.hubo" We were able to login to Client-1 with his credentials as a normal user. 
-</p>
+```
+┌─────────────────────────────┐         ┌──────────────────────────────┐
+│   On-Premises Environment   │         │     Microsoft Entra ID       │
+│                             │         │                              │
+│  Windows Server 2025 DC     │◄───────►│  Cloud Identity & Access     │
+│  AD DS (examlabpractice.com)│  Entra  │  Conditional Access          │
+│  500+ User Accounts         │ Connect │  PIM                         │
+│  Department OUs             │  Sync   │  RBAC                        │
+│  Security Groups            │         │  Log Analytics               │
+│  Fine-Grained Pwd Policies  │         │  SSPR                        │
+└─────────────────────────────┘         └──────────────────────────────┘
+```
+
+---
+
+## Project Phases
+
+### Phase 1 — Environment Setup
+
+- Deployed Windows Server 2025 and promoted to Domain Controller
+- Configured Active Directory Domain Services with domain `examlabpractice.com`
+- Bulk-provisioned 500 randomized test user accounts using a custom PowerShell script (`New-BulkADUsers.ps1`)
+- Installed and configured Microsoft Entra Connect Sync for hybrid identity
+- Verified bidirectional sync — confirmed all users appear in Entra ID portal
+
+**Scripts:** `New-BulkADUsers.ps1`
+
+---
+
+### Phase 2 — OU Structure & User Provisioning
+
+- Created department-based OU structure (IT, HR, Finance, Sales, Disabled) via PowerShell
+- Created department security groups via PowerShell
+- Provisioned users into correct OUs by department with proper AD attributes
+- Automated onboarding workflow — single script creates user, assigns group, forces delta sync
+- Automated offboarding workflow — disables account, strips group memberships, moves to Disabled OU, forces sync
+- Verified all changes reflected in Entra ID after each sync cycle
+
+**Scripts:** `New-OnboardUser.ps1`, `Invoke-OffboardUser.ps1`, `New-DepartmentOUs.ps1`
+
+**Key commands:**
+```powershell
+# Force a delta sync after provisioning
+Start-ADSyncSyncCycle -PolicyType Delta
+
+# Verify sync status
+Get-ADSyncConnectorRunStatus
+```
+
+---
+
+### Phase 3 — Role Based Access Control
+
+- Created Help Desk security group and assigned Password Administrator role in Entra ID
+- Created IT Admins security group and assigned User Administrator role in Entra ID
+- Used PowerShell and Microsoft Graph API to query all role assignments and export to CSV
+- Documented least privilege justification for each role assignment
+- Tested role boundaries — verified Help Desk can reset passwords but cannot create users
+
+**Scripts:** `Get-EntraRoleAssignments.ps1`
+
+**Key commands:**
+```powershell
+# Query all Entra ID role assignments via Graph
+Connect-MgGraph -Scopes "RoleManagement.Read.All"
+Get-MgRoleManagementDirectoryRoleAssignment | Export-Csv RoleAssignments.csv
+```
+
+---
+
+### Phase 4 — Conditional Access Policies
+
+- Created policy requiring MFA for all users on all cloud applications
+- Created policy blocking sign-ins from outside the United States using named locations
+- Configured named location for the lab environment
+- Tested policies in Report-Only mode before enforcement
+- Documented business justification and threat coverage for each policy
+
+---
+
+### Phase 5 — Privileged Identity Management
+
+- Enabled PIM in Entra ID and converted Global Administrator to an eligible role
+- Configured activation requirements — MFA and written justification required
+- Set maximum activation duration to 1 hour
+- Configured approval workflow requiring a second admin to approve activation
+- Tested the full just-in-time flow — requested access, approved, verified, expired
+- Documented how PIM reduces standing admin access risk and lateral movement exposure
+
+---
+
+### Phase 6 — Password & Authentication Policies
+
+- Created Fine-Grained Password Policy for admin accounts via PowerShell:
+  - 16 character minimum length
+  - Complexity required
+  - 60 day expiration
+  - 10 password history
+- Applied policy to IT Admins security group via PowerShell
+- Enabled Entra ID Password Protection to block weak and organization-banned passwords
+- Configured Self-Service Password Reset (SSPR) for all users
+- Tested and documented the full SSPR registration and reset flow
+
+**Scripts:** `New-AdminPasswordPolicy.ps1`
+
+**Key commands:**
+```powershell
+# Create Fine-Grained Password Policy
+New-ADFineGrainedPasswordPolicy -Name "AdminPolicy" `
+    -Precedence 10 `
+    -MinPasswordLength 16 `
+    -ComplexityEnabled $true `
+    -MaxPasswordAge "60.00:00:00" `
+    -PasswordHistoryCount 10
+
+# Apply to IT Admins group
+Add-ADFineGrainedPasswordPolicySubject -Identity "AdminPolicy" -Subjects "IT Admins"
+```
+
+---
+
+### Phase 7 — Monitoring & Auditing
+
+- Created Log Analytics Workspace in Azure
+- Connected Entra ID diagnostic logs (sign-in logs, audit logs) to Log Analytics
+- Wrote KQL queries for threat detection:
+  - Failed sign-in attempts in the last 24 hours
+  - Users added to privileged roles
+  - Sign-ins from outside the United States
+- Used PowerShell and Microsoft Graph to generate privileged role membership report
+- Used PowerShell to pull and export Entra ID audit log events to CSV
+- Wrote a mock incident report based on simulated findings
+
+**Scripts:** `Get-PrivilegedRoleReport.ps1`, `Export-EntraAuditLogs.ps1`
+
+**KQL — Failed Sign-ins (last 24 hours):**
+```kql
+SigninLogs
+| where TimeGenerated > ago(24h)
+| where ResultType != 0
+| summarize FailureCount = count() by UserPrincipalName, IPAddress, ResultDescription
+| sort by FailureCount desc
+```
+
+**KQL — Users Added to Privileged Roles:**
+```kql
+AuditLogs
+| where OperationName == "Add member to role"
+| where TargetResources[0].modifiedProperties[0].newValue contains "Admin"
+| project TimeGenerated, InitiatedBy, TargetResources
+```
+
+**KQL — Sign-ins Outside the US:**
+```kql
+SigninLogs
+| where TimeGenerated > ago(7d)
+| where Location !startswith "US"
+| project TimeGenerated, UserPrincipalName, Location, IPAddress, ResultType
+```
+
+---
+
+## Key Skills Demonstrated
+
+- Hybrid identity architecture and Entra Connect Sync configuration
+- Active Directory administration — OUs, groups, GPOs, fine-grained password policies
+- PowerShell automation for user lifecycle management (provisioning, onboarding, offboarding)
+- Microsoft Graph API integration for identity reporting and auditing
+- Role Based Access Control (RBAC) with least privilege principles
+- Conditional Access policy design and enforcement
+- Privileged Identity Management (PIM) with just-in-time access and approval workflows
+- Security monitoring using KQL queries in Azure Log Analytics
+- Incident documentation and audit log analysis
+
+---
+
+## Author
+
+**Marco Smith**
+Cybersecurity & IAM Professional | BS Cybersecurity & Information Assurance, WGU
+Certifications: CompTIA Security+, Network+, CySA+ | Microsoft AZ-104, SC-300
+
+GitHub: [github.com/marcoasmith](https://github.com/marcoasmith)
