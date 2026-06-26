@@ -1,3 +1,10 @@
+<div align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Microsoft_Azure.svg/150px-Microsoft_Azure.svg.png" alt="Microsoft Azure" width="80"/>
+  &nbsp;&nbsp;&nbsp;
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Windows_logo_-_2012.svg/150px-Windows_logo_-_2012.svg.png" alt="Active Directory" width="80"/>
+</div>
+<br/>
+
 # Active Directory & Entra ID Hybrid IAM Implementation
 
 A hands-on Identity and Access Management lab built to simulate real-world enterprise hybrid identity workflows using Windows Server 2025, Active Directory, and Microsoft Entra ID. This project covers the full IAM lifecycle — from environment deployment and user provisioning to privileged access management, conditional access enforcement, and security monitoring.
@@ -18,7 +25,6 @@ A hands-on Identity and Access Management lab built to simulate real-world enter
   - [Phase 6 — Password & Authentication Policies](#phase-6--password--authentication-policies)
   - [Phase 7 — Monitoring & Auditing](#phase-7--monitoring--auditing)
 - [Key Skills Demonstrated](#key-skills-demonstrated)
-- [Author](#author)
 
 ---
 
@@ -219,13 +225,3 @@ SigninLogs
 - Privileged Identity Management (PIM) with just-in-time access and approval workflows
 - Security monitoring using KQL queries in Azure Log Analytics
 - Incident documentation and audit log analysis
-
----
-
-## Author
-
-**Marco Smith**
-Cybersecurity & IAM Professional | BS Cybersecurity & Information Assurance, WGU
-Certifications: CompTIA Security+, Network+, CySA+ | Microsoft AZ-104, SC-300
-
-GitHub: [github.com/marcoasmith](https://github.com/marcoasmith)
