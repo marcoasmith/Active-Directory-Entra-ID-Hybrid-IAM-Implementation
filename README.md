@@ -1,9 +1,7 @@
 <div align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Microsoft_Azure.svg/150px-Microsoft_Azure.svg.png" alt="Microsoft Azure" width="80"/>
-  &nbsp;&nbsp;&nbsp;
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Windows_logo_-_2012.svg/150px-Windows_logo_-_2012.svg.png" alt="Active Directory" width="80"/>
+<img width="300" height="150" alt="images" src="https://github.com/user-attachments/assets/fcd0d725-24e8-4d33-99e2-65587b54047d" />
 </div>
-<br/>
+
 
 # Active Directory & Entra ID Hybrid IAM Implementation
 
