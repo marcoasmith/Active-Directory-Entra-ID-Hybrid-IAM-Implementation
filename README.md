@@ -74,6 +74,10 @@ This lab replicates the hybrid identity infrastructure found in enterprise envir
 - Bulk-provisioned 500 randomized test user accounts using a custom PowerShell script (`New-BulkADUsers.ps1`)
 - Installed and configured Microsoft Entra Connect Sync for hybrid identity
 - Verified bidirectional sync — confirmed all users appear in Entra ID portal
+- <img width="850" height="658" alt="Screenshot 2026-06-28 at 4 42 31 PM" src="https://github.com/user-attachments/assets/e493f4d0-09e7-4bb2-acb3-468f207cd0d1" />
+<img width="1475" height="756" alt="Screenshot 2026-06-28 at 4 44 09 PM" src="https://github.com/user-attachments/assets/7b34bb4f-e7ac-43ea-9b14-f650c755ac62" />
+
+
 
 **Scripts:** `New-BulkADUsers.ps1`
 
