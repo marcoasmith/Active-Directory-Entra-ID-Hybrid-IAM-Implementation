@@ -104,6 +104,15 @@ This lab replicates the hybrid identity infrastructure found in enterprise envir
 - Documented least privilege justification for each role assignment
 - Tested role boundaries — verified Help Desk can reset passwords but cannot create users
 
+  ## Role Assignment — Least Privilege Justification
+
+| Role | Assigned To | Justification |
+|---|---|---|
+| Password Administrator | HelpDesk | Allows Help Desk to reset user passwords without granting broader user management rights |
+| User Administrator | ITAdmins | Allows IT Admins to create and manage users without granting Global Administrator privileges |
+| Directory Readers | Service Principal | Read-only access required for Entra Connect sync operations |
+| Global Administrator | Admin accounts | Break-glass accounts only — not used for day-to-day operations |
+
 
 
 ### Phase 4 — Conditional Access Policies
