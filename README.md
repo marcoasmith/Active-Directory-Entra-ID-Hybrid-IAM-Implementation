@@ -91,6 +91,7 @@ This lab replicates the hybrid identity infrastructure found in enterprise envir
 - Automated onboarding workflow — single script creates user, assigns group
 - Automated offboarding workflow — disables account, strips group memberships, moves to Disabled OU
 - Verified all changes reflected in Entra ID after each sync cycle
+<img width="1268" height="722" alt="Screenshot 2026-06-28 at 5 49 04 PM" src="https://github.com/user-attachments/assets/1322a5d1-2c5b-4da8-bb82-e93d1742d8b7" />
 
 
 
@@ -103,16 +104,7 @@ This lab replicates the hybrid identity infrastructure found in enterprise envir
 - Documented least privilege justification for each role assignment
 - Tested role boundaries — verified Help Desk can reset passwords but cannot create users
 
-**Scripts:** `Get-EntraRoleAssignments.ps1`
 
-**Key commands:**
-```powershell
-# Query all Entra ID role assignments via Graph
-Connect-MgGraph -Scopes "RoleManagement.Read.All"
-Get-MgRoleManagementDirectoryRoleAssignment | Export-Csv RoleAssignments.csv
-```
-
----
 
 ### Phase 4 — Conditional Access Policies
 
