@@ -112,6 +112,8 @@ This lab replicates the hybrid identity infrastructure found in enterprise envir
 | User Administrator | ITAdmins | Allows IT Admins to create and manage users without granting Global Administrator privileges |
 | Directory Readers | Service Principal | Read-only access required for Entra Connect sync operations |
 | Global Administrator | Admin accounts | Break-glass accounts only — not used for day-to-day operations |
+<img width="1848" height="749" alt="Screenshot 2026-06-29 at 12 15 43 PM" src="https://github.com/user-attachments/assets/1dd4fe72-99e6-4c9c-bb50-c159a8b3319f" />
+
 
 
 
