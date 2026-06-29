@@ -89,7 +89,7 @@ This lab replicates the hybrid identity infrastructure found in enterprise envir
 - Created department security groups via PowerShell
 - Provisioned users into correct OUs by department with proper AD attributes
 - Automated onboarding workflow — single script creates user, assigns group, forces delta sync
-- Automated offboarding workflow — disables account, strips group memberships, moves to Disabled OU, forces sync
+- Automated offboarding workflow — disables account, strips group memberships, moves to Disabled OU
 - Verified all changes reflected in Entra ID after each sync cycle
 
 **Scripts:** `New-OnboardUser.ps1`, `Invoke-OffboardUser.ps1`, `New-DepartmentOUs.ps1`
