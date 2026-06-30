@@ -189,6 +189,42 @@ Both policies were deployed in Report-only mode first to evaluate impact on exis
 - Configured Self-Service Password Reset (SSPR) for all users
 - Tested and documented the full SSPR registration and reset flow
 
+<img width="1102" height="735" alt="Screenshot 2026-06-30 at 2 34 47 PM" src="https://github.com/user-attachments/assets/5b997f8f-b016-40f7-a0f5-841fd92a6fdc" />
+
+## Password Management Configuration
+
+### Fine-Grained Password Policy — AdminPasswordPolicy
+Applied to: `ITAdmins` security group via PowerShell
+
+| Setting | Value |
+|---|---|
+| Minimum password length | 16 characters |
+| Complexity required | Yes |
+| Maximum password age | 60 days |
+| Password history | 10 passwords |
+| Precedence | 10 |
+
+### Entra ID Password Protection
+| Setting | Value |
+|---|---|
+| Mode | Audit |
+| Custom banned passwords | Enabled |
+| On-premises AD protection | Enabled |
+
+### Self-Service Password Reset (SSPR)
+| Setting | Value |
+|---|---|
+| Enabled for | All users |
+| Methods required to reset | 2 |
+| Authentication methods | Mobile app notification, Email, Mobile phone |
+| Registration required at sign-in | Yes |
+| Re-confirmation interval | 180 days |
+
+### SSPR Flow Tested
+- User navigated to https://aka.ms/sspr
+- Registered authentication methods on first sign-in
+- Successfully completed identity verification
+- Password reset without admin intervention
 
 
 
