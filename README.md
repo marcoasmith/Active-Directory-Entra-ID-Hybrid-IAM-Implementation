@@ -140,6 +140,8 @@ This lab replicates the hybrid identity infrastructure found in enterprise envir
 
 ### Report-Only Mode Justification
 Both policies were deployed in Report-only mode first to evaluate impact on existing users and service accounts before enforcement, following least-disruption change management practices.
+<img width="890" height="863" alt="Screenshot 2026-06-29 at 5 12 49 PM" src="https://github.com/user-attachments/assets/f059675d-d81b-4d1c-8608-8f4d736227f6" />
+
 
 ---
 
@@ -166,7 +168,7 @@ Both policies were deployed in Report-only mode first to evaluate impact on exis
 - Configured Self-Service Password Reset (SSPR) for all users
 - Tested and documented the full SSPR registration and reset flow
 
-**Scripts:** `New-AdminPasswordPolicy.ps1`
+
 
 **Key commands:**
 ```powershell
