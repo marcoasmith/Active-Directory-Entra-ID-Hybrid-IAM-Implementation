@@ -125,6 +125,22 @@ This lab replicates the hybrid identity infrastructure found in enterprise envir
 - Tested policies in Report-Only mode before enforcement
 - Documented business justification and threat coverage for each policy
 
+  ## Conditional Access Policies
+
+| Policy | Scope | Grant Control | Mode | Business Justification |
+|---|---|---|---|---|
+| Require MFA - All Users All Apps | All users, All cloud apps | Require MFA | Report-only | Mitigates credential theft and phishing attacks by requiring a second factor for all cloud access regardless of location |
+| Block Sign-ins - Outside United States | All users, All cloud apps | Block access | Report-only | Reduces attack surface by preventing authentication attempts from outside the organization's operating geography |
+
+### Threat Coverage
+- **Credential stuffing** — MFA policy ensures stolen passwords alone cannot grant access
+- **Phishing** — MFA requirement adds friction even when credentials are compromised
+- **Foreign threat actors** — Location-based block prevents sign-ins from outside the US
+- **Lateral movement** — Combined policies limit blast radius if an account is compromised
+
+### Report-Only Mode Justification
+Both policies were deployed in Report-only mode first to evaluate impact on existing users and service accounts before enforcement, following least-disruption change management practices.
+
 ---
 
 ### Phase 5 — Privileged Identity Management
