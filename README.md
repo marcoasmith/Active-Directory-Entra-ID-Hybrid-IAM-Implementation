@@ -191,21 +191,7 @@ Both policies were deployed in Report-only mode first to evaluate impact on exis
 
 
 
-**Key commands:**
-```powershell
-# Create Fine-Grained Password Policy
-New-ADFineGrainedPasswordPolicy -Name "AdminPolicy" `
-    -Precedence 10 `
-    -MinPasswordLength 16 `
-    -ComplexityEnabled $true `
-    -MaxPasswordAge "60.00:00:00" `
-    -PasswordHistoryCount 10
 
-# Apply to IT Admins group
-Add-ADFineGrainedPasswordPolicySubject -Identity "AdminPolicy" -Subjects "IT Admins"
-```
-
----
 
 ### Phase 7 — Monitoring & Auditing
 
