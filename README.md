@@ -154,6 +154,27 @@ Both policies were deployed in Report-only mode first to evaluate impact on exis
 - Tested the full just-in-time flow — requested access, approved, verified, expired
 - Documented how PIM reduces standing admin access risk and lateral movement exposure
 
+<img width="1970" height="1118" alt="Screenshot 2026-06-30 at 2 17 47 PM" src="https://github.com/user-attachments/assets/7560a737-634b-483b-9a79-58d7c236101c" />
+
+## Privileged Identity Management (PIM) Configuration
+
+### How PIM Reduces Standing Admin Access Risk
+
+| Risk | Without PIM | With PIM |
+|---|---|---|
+| Standing access | Global Admin active 24/7 | Access only active when needed |
+| Credential compromise | Attacker inherits full admin rights immediately | Attacker cannot activate without MFA + justification + approval |
+| Lateral movement | Compromised admin can pivot across entire tenant | 1-hour window limits blast radius |
+| Insider threat | No audit trail for admin actions | Every activation logged with justification and approver |
+| Over-provisioning | Admins accumulate roles over time | Eligible assignments require explicit activation each time |
+
+### Activation Requirements Configured
+- Azure MFA required on activation
+- Written justification required
+- Second admin approval required
+- Maximum activation duration: 1 hour
+
+
 ---
 
 ### Phase 6 — Password & Authentication Policies
