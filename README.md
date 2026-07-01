@@ -241,39 +241,50 @@ Applied to: `ITAdmins` security group via PowerShell
 - Used PowerShell to pull and export Entra ID audit log events to CSV
 - Wrote a mock incident report based on simulated findings
 
-**Scripts:** `Get-PrivilegedRoleReport.ps1`, `Export-EntraAuditLogs.ps1`
+  <img width="960" height="709" alt="Screenshot 2026-07-01 at 12 40 50 PM" src="https://github.com/user-attachments/assets/424dd4e7-249d-43e8-a96d-e55e1240d950" />
 
-**KQL — Failed Sign-ins (last 24 hours):**
-```kql
-SigninLogs
-| where TimeGenerated > ago(24h)
-| where ResultType != 0
-| summarize FailureCount = count() by UserPrincipalName, IPAddress, ResultDescription
-| sort by FailureCount desc
-```
+## Mock Incident Report
 
-**KQL — Users Added to Privileged Roles:**
-```kql
-AuditLogs
-| where OperationName == "Add member to role"
-| where TargetResources[0].modifiedProperties[0].newValue contains "Admin"
-| project TimeGenerated, InitiatedBy, TargetResources
-```
+**Incident ID:** INC-2026-001
+**Date:** June 30, 2026
+**Severity:** Medium
+**Status:** Closed — Simulated/Lab Exercise
 
-**KQL — Sign-ins Outside the US:**
-```kql
-SigninLogs
-| where TimeGenerated > ago(7d)
-| where Location !startswith "US"
-| project TimeGenerated, UserPrincipalName, Location, IPAddress, ResultType
-```
+### Summary
+During routine audit log review, multiple failed password reset attempts were detected 
+for a user account, followed by a successful self-service password reset. Additionally, 
+a privileged role activation request was submitted and approved within a short timeframe.
 
----
+### Timeline of Events
+| Time | Event | User | Result |
+|---|---|---|---|
+| 9:09 AM | Change password (self-service) | pim-test | success |
+| 9:10 AM | User started security info registration | pim-test | success |
+| 9:14 AM | Add member to role requested (PIM) | pim-test | success |
+| 9:17 AM | Request approved | iam-admin | success |
+| 9:18 AM | Add member to role completed (PIM) | pim-test | success |
+| 9:43 AM | Reset password (self-service) | helpdesktester | failure |
+
+### Findings
+- PIM activation flow completed successfully with MFA and approval — expected behavior
+- SSPR registration and reset flow functioning as configured
+- Failed password reset attempt logged and auditable
+
+### Containment
+No containment required — all activity consistent with lab testing procedures.
+
+### Recommendations
+- Monitor for repeated failed SSPR attempts as potential account enumeration
+- Ensure PIM activation justifications are reviewed regularly
+- Set alerts in Log Analytics for failed sign-ins exceeding threshold
+
+
+
 
 ## Key Skills Demonstrated
 
 - Hybrid identity architecture and Entra Connect Sync configuration
-- Active Directory administration — OUs, groups, GPOs, fine-grained password policies
+- Active Directory administration — OUs, groups, and fine-grained password policies
 - PowerShell automation for user lifecycle management (provisioning, onboarding, offboarding)
 - Microsoft Graph API integration for identity reporting and auditing
 - Role Based Access Control (RBAC) with least privilege principles
